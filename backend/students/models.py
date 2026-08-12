@@ -10,11 +10,6 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
 
-
-# =====================================================================
-# YOUR EXISTING MODELS
-# =====================================================================
-
 class Question(models.Model):
     DIFFICULTY = [('Easy', 'Easy'), ('Medium', 'Medium'), ('Hard', 'Hard')]
     slug = models.SlugField(unique=True)
@@ -44,21 +39,12 @@ class TestCase(models.Model):
 
 
 class Submission(models.Model):
-    # NEW: links a submission to the logged-in user, so we can show their
-    # progress on the dashboard. Nullable so old/anonymous submissions
-    # (made before this field existed, or if someone submits logged out)
-    # don't break anything.
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, related_name='submissions')
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     code = models.TextField()
     status = models.CharField(max_length=10)
     score = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
-
-
-# =====================================================================
-# AUTH — helper functions (encryption / hashing)
-# =====================================================================
 
 def _fernet():
     return Fernet(settings.EMAIL_ENCRYPTION_KEY)
@@ -90,10 +76,6 @@ def hash_phone(plain_phone: str) -> str:
     return hmac.new(key, plain_phone.strip().encode(), hashlib.sha256).hexdigest()
 
 
-# =====================================================================
-# AUTH — UserProfile
-# =====================================================================
-
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     email_encrypted = models.TextField()
@@ -115,9 +97,6 @@ class UserProfile(models.Model):
         return f'Profile#{self.pk}'
 
 
-# =====================================================================
-# AUTH — EmailOTP
-# =====================================================================
 
 class EmailOTP(models.Model):
     profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='otps')
@@ -158,10 +137,6 @@ class EmailOTP(models.Model):
         self.save(update_fields=['attempts'])
         return hmac.compare_digest(self.code_hash, self._hash_code(submitted_code))
 
-
-# =====================================================================
-# AUTH — PasswordResetToken
-# =====================================================================
 
 class PasswordResetToken(models.Model):
     profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='reset_tokens')

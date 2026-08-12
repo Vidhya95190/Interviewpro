@@ -18,8 +18,6 @@ export default function ForgotPassword() {
     setSubmitting(true);
     try {
       await requestPasswordReset(identifier.trim());
-      // Same message shown whether or not the account exists — this is
-      // intentional and matches what the backend returns.
       setSent(true);
     } catch (err) {
       setError(err.message);

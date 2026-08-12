@@ -27,10 +27,6 @@ from .serializers import (
 )
 
 
-# =====================================================================
-# YOUR EXISTING QUESTION VIEWS
-# =====================================================================
-
 @api_view(['GET'])
 def get_question(request, slug):
     try:
@@ -125,10 +121,6 @@ def list_questions(request):
     return Response(data)
 
 
-# =====================================================================
-# DASHBOARD — per-user progress
-# =====================================================================
-
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def my_progress(request):
@@ -182,10 +174,6 @@ def me(request):
     })
 
 
-# =====================================================================
-# AUTH — shared helpers
-# =====================================================================
-
 def _send_otp_email(plain_email, code):
     send_mail(
         subject='Your verification code',
@@ -215,11 +203,6 @@ def _find_profile_by_identifier(identifier: str):
         return UserProfile.objects.select_related('user').get(phone_hash=hash_phone(identifier))
     except UserProfile.DoesNotExist:
         return None
-
-
-# =====================================================================
-# AUTH — Register / Verify / Login / Resend
-# =====================================================================
 
 class RegisterView(APIView):
     permission_classes = [AllowAny]
@@ -348,10 +331,6 @@ class LoginView(APIView):
         })
 
 
-# =====================================================================
-# AUTH — Google Sign-In
-# =====================================================================
-
 class GoogleLoginView(APIView):
     permission_classes = [AllowAny]
     throttle_classes = [ScopedRateThrottle]
@@ -412,11 +391,6 @@ class GoogleLoginView(APIView):
                 'full_name': profile.full_name, 'is_verified': True,
             }).data,
         })
-
-
-# =====================================================================
-# AUTH — Forgot password (link-based, via phone OR email)
-# =====================================================================
 
 GENERIC_RESET_MESSAGE = 'If an account matches those details, a reset link has been emailed to the address on file.'
 

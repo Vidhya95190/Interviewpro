@@ -1,9 +1,6 @@
 import axios from 'axios';
 
 const API = axios.create({ baseURL: 'http://127.0.0.1:8000/api/' });
-
-// Auto-attaches the JWT access token (saved by authApi.js on login) to every
-// request, so protected endpoints work.
 API.interceptors.request.use((config) => {
   const token = sessionStorage.getItem('access_token');
   if (token) {

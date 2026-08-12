@@ -1,19 +1,17 @@
-# Python
+# --- Python / Django ---
+venv/
 __pycache__/
 *.pyc
-venv/
-.env
 db.sqlite3
+.env
+staticfiles/
 
-# Node
-frontend/node_modules/
-frontend/dist/
-frontend/.env
+# --- Node / React / Vite ---
+node_modules/
+dist/
+.vite/
 
-# IDE
+# --- Editor / OS ---
 .vscode/
-.idea/node_modules/ 
-backend/node_modules/ 
-frontend/node_modules/ 
-__pycache__/ 
-db.sqlite3 
+.DS_Store
+Thumbs.db

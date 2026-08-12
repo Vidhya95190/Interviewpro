@@ -1,13 +1,7 @@
 from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
-
 from .models import UserProfile, hash_email, hash_phone
-
-
-# =====================================================================
-# AUTH SERIALIZERS
-# =====================================================================
 
 class RegisterSerializer(serializers.Serializer):
     username = serializers.CharField(max_length=30, min_length=3)
@@ -27,7 +21,6 @@ class RegisterSerializer(serializers.Serializer):
 
     def validate_email(self, value):
         if UserProfile.objects.filter(email_hash=hash_email(value)).exists():
-            # Generic message on purpose — avoids revealing an email is already registered
             raise serializers.ValidationError('Registration could not be completed with these details.')
         return value
 
@@ -49,7 +42,6 @@ class VerifyOTPSerializer(serializers.Serializer):
 
 
 class PasswordResetRequestSerializer(serializers.Serializer):
-    # Accepts EITHER a phone number OR an email — whichever the user has on file
     identifier = serializers.CharField()
 
 

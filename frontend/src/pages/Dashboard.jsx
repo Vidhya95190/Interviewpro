@@ -26,7 +26,6 @@ export default function Dashboard() {
       })
       .catch((err) => {
         if (err.response?.status === 401) {
-          // Token expired or invalid — send back to login
           sessionStorage.removeItem('access_token');
           sessionStorage.removeItem('refresh_token');
           navigate('/login');

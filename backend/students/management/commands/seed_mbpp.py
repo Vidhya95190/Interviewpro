@@ -1,15 +1,3 @@
-# seed_mbpp.py
-# Django management command.
-# Place this file at: students/management/commands/seed_mbpp.py
-# (same management/commands folder where seed_questions.py already lives)
-#
-# Run with: python manage.py seed_mbpp
-#
-# This downloads Google's MBPP (Mostly Basic Python Problems) dataset -
-# ~974 hand-verified Python problems, each with real assert-based test
-# cases - and converts them into your Question + TestCase schema.
-# Requires internet access on the machine running this command.
-
 import ast
 import json
 import urllib.request
